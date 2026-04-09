@@ -121,6 +121,3 @@ if (mode == "FIND_CUTOFF") {
 
     ggsave(paste0(prefix, "_Saturation.pdf"), final, width=15, height=12)
 }
-
-
-/data/work/饱和度/version4/ATAC_saturation_final.pl
