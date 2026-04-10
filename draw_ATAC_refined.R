@@ -119,5 +119,6 @@ if (mode == "FIND_CUTOFF") {
     final <- (left_panel | right_panel) + plot_layout(widths = c(1.5, 1)) +
              plot_annotation(title = paste("Stereo-ATAC QC Report:", display_name), theme = theme(plot.title = element_text(size=18, face="bold", hjust=0.5)))
 
-    ggsave(paste0(prefix, "_Saturation.pdf"), final, width=15, height=12)
+    #ggsave(paste0(prefix, "_Saturation.pdf"), final, width=15, height=12)
+    ggsave(paste0(prefix, "_Saturation.png"), final, width=15, height=12, dpi=1000, type = "cairo")
 }
