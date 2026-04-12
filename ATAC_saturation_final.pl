@@ -44,6 +44,13 @@ chomp($cutoff);
 $cutoff ||= 1000;
 &show_log("  >> Final Cutoff applied: $cutoff fragments.");
 
+# 保存 cutoff 值到文件，供后续步骤使用
+my $cutoff_file = "${base_prefix}.cutoff.txt";
+open (CUTOFF, ">$cutoff_file") || die "Cannot write cutoff file: $!";
+print CUTOFF "$cutoff\n";
+close CUTOFF;
+&show_log("  >> Cutoff saved to: $cutoff_file");
+
 # --- Step 1: 信号过滤 ---
 my %valid_bcs = ();
 foreach (keys %bc_all) { 
@@ -51,6 +58,15 @@ foreach (keys %bc_all) {
 }
 my $signal_filter_count = scalar(keys %valid_bcs);
 &show_log("  >> Signal Filter Pass: $signal_filter_count spots.");
+
+# 输出信号过滤后的 barcode list
+my $signal_bc_file = "${base_prefix}.barcode_pass_signal.txt";
+open (SIGBC, ">$signal_bc_file");
+foreach my $bc (sort keys %valid_bcs) {
+    print SIGBC "$bc\n";
+}
+close SIGBC;
+&show_log("  >> Signal filter barcodes saved to: $signal_bc_file");
 
 # --- Step 2: 加载数据用于抽样 ---
 &show_log("Step 2: Loading valid fragments for sampling...");
@@ -101,8 +117,11 @@ close OUT;
 &show_log("Step 5: Generating PDF report...");
 system("Rscript $Bin/draw_ATAC_refined.R $outfile $bc_dist $base_prefix DRAW $cutoff");
 
-unlink $bc_dist;
+# 保留 barcode_dist.tmp 给后续步骤使用
+# unlink $bc_dist;
 &show_log("Done. Results: $outfile");
+&show_log("  >> Barcode distribution: $bc_dist");
+&show_log("  >> Saturation stats: $outfile");
 
 sub calculate_median_fixed {
     my ($arr, $total) = @_;
