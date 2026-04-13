@@ -360,7 +360,7 @@ stats_df <- data.frame(
     value = c(
         round(median(pbmc@meta.data$nFrags, na.rm = TRUE), 0),
         round(median(pbmc@meta.data$TSS.enrichment, na.rm = TRUE), 2),
-        round(median(pbmc@meta.data$FRiP, na.rm = TRUE) * 100, 2),
+        round(median(pbmc@meta.data$FRiP, na.rm = TRUE) * 100, 1),
         round(median(pbmc@meta.data$blacklist_ratio, na.rm = TRUE) * 100, 2),
         ncol(pbmc)
     )
